@@ -1,5 +1,5 @@
 blueprint:
-  name: Ring Keypad Automations
+  name: Alarmo & Ring Keypad Automations
   description: Automations to use the Ring Keypad with an Alarmo Panel integration using all alarmo preconfigured alarm modes
   domain: automation
   input:
