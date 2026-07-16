@@ -131,7 +131,7 @@ trigger:
     entity_id: !input alarm
     to: triggered
     id: alarm_triggered
-- platform: state
+  - platform: state
     entity_id: !input alarm
     to: armed_night
     id: alarm_armed_night
@@ -159,6 +159,33 @@ action:
               {% if trigger.event.data.event_data != none %}
                 {{ trigger.event.data.event_data }}
               {% endif %}
+    - conditions:
+        - condition: trigger
+          id: alarm_armed_night
+      sequence:
+        - service: zwave_js.set_value
+          target:
+            device_id: !input keypad
+          data:
+            command_class: "135"
+            endpoint: "0"
+            property: "10"          # Armed Stay LED — change to "11" for Away look
+            property_key: "1"
+            value: 99
+    - conditions:
+        - condition: trigger
+          id: alarm_armed_vacation
+      sequence:
+        - service: zwave_js.set_value
+          target:
+            device_id: !input keypad
+          data:
+            command_class: "135"
+            endpoint: "0"
+            property: "11"          # Armed Away LED — change to "10" for Stay look
+            property_key: "1"
+            value: 99
+
     - conditions:
         - condition: and
           conditions:
@@ -238,32 +265,6 @@ action:
             command_class: "135"
             endpoint: "0"
             property: "2"
-            property_key: "1"
-            value: 99
-    - conditions:
-        - condition: trigger
-          id: alarm_armed_night
-      sequence:
-        - service: zwave_js.set_value
-          target:
-            device_id: !input keypad
-          data:
-            command_class: "135"
-            endpoint: "0"
-            property: "10"          # Armed Stay LED — change to "11" for Away look
-            property_key: "1"
-            value: 99
-    - conditions:
-        - condition: trigger
-          id: alarm_armed_vacation
-      sequence:
-        - service: zwave_js.set_value
-          target:
-            device_id: !input keypad
-          data:
-            command_class: "135"
-            endpoint: "0"
-            property: "11"          # Armed Away LED — change to "10" for Stay look
             property_key: "1"
             value: 99
     - conditions:
